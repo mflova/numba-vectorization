@@ -1,0 +1,24 @@
+# Temporary Python files and directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+*.pyi
+*.pyz
+
+# Virtual environment directory (optional)
+venv/
+env/
+
+# Mypy cache directory
+.mypy_cache/
+
+# Other common temporary files
+*.swp
+*~
+
+# Package
+*.egg-info/
+build/
