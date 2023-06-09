@@ -7,6 +7,9 @@ from numba import float64, vectorize
 from numba_vectorization.utils.type_aliases import FloatArray
 
 
+# Core functions
+
+
 @vectorize([float64(float64, float64)])
 def _vec_cpu_func(a: float, b: float) -> float:
     return np.sqrt(a**2 + b**2)
@@ -20,6 +23,14 @@ def _vec_parallel_func(a: float, b: float) -> float:
 @vectorize([float64(float64, float64)], target="cuda")
 def _vec_cuda_func(a: float, b: float) -> float:
     return math.sqrt(a**2 + b**2)
+
+
+@vectorize([float64(float64, float64)])
+def vec_sum(a: float, b: float) -> float:
+    return a + b
+
+
+# Public wrappers for better type hints
 
 
 def vec_cpu_func(a: FloatArray, b: FloatArray) -> FloatArray:
