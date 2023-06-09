@@ -77,6 +77,7 @@ def main() -> None:
     plot_metrics = args.plot_metrics
     up_to_n_samples = args.up_to_n_samples
     increase_by = args.increase_by
+    n_calls = args.n_calls
 
     # Shapes that will be used to generate input data to the functions to test
     shapes = generate_shapes(increase_by=increase_by, up_to=up_to_n_samples)
@@ -91,7 +92,8 @@ def main() -> None:
         vectorize_based.vec_cuda_func,
     )
 
-    Experiment(funcs, shapes=shapes).run(
+    experiment = Experiment(funcs, shapes=shapes, n_calls_per_function=n_calls)
+    experiment.run(
         print_metrics=print_metrics, plot_metrics=plot_metrics, silence_warnings=True
     )
 

@@ -6,12 +6,12 @@ from numba_vectorization.utils.type_aliases import FloatArray
 
 
 def _for_loop_func(a: float, b: float) -> float:
-    return np.sqrt(a**2 + b**2)
+    return np.cos(np.sqrt(a**2 + b**2) + 100 + np.sin(b))
 
 
 @njit([float64(float64, float64)])
 def _for_loop_jit_func(a: float, b: float) -> float:
-    return np.sqrt(a**2 + b**2)
+    return np.cos(np.sqrt(a**2 + b**2) + 100 + np.sin(b))
 
 
 def for_loop_func(a: FloatArray, b: FloatArray) -> FloatArray:

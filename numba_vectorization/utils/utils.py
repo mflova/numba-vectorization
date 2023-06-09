@@ -19,6 +19,7 @@ from typing import (
 import matplotlib.pyplot as plt
 import numpy as np
 from numba import NumbaPerformanceWarning
+import matplotlib.ticker as ticker
 
 from numba_vectorization.utils.type_aliases import FloatArray
 
@@ -146,8 +147,16 @@ class Experiment:
                 label=f"{self._func_name_with_spaces(func_name)}(x{speed_up} speed up)",
             )
 
+        ax = plt.gca()
+        formatter = ticker.FuncFormatter(lambda x, pos: f"{int(x/1000)}k")
+        ax.xaxis.set_major_formatter(formatter)
+
         plt.yscale("log")
-        plt.xlim(0, np.max(n_samples_used))
+        plt.xlabel("Number of samples used")
+        plt.ylabel("Exeuction time")
+        plt.title(f"Execution times using {self.n_calls_per_function} for each average.")
         plt.grid(True, which="both")
+
+        plt.xlim(0, np.max(n_samples_used))
         plt.legend()
         plt.show()

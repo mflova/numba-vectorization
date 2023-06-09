@@ -12,17 +12,17 @@ from numba_vectorization.utils.type_aliases import FloatArray
 
 @vectorize([float64(float64, float64)])
 def _vec_cpu_func(a: float, b: float) -> float:
-    return np.sqrt(a**2 + b**2)
+    return np.cos(np.sqrt(a**2 + b**2) + 100 + np.sin(b))
 
 
 @vectorize([float64(float64, float64)], target="parallel")
 def _vec_parallel_func(a: float, b: float) -> float:
-    return np.sqrt(a**2 + b**2)
+    return np.cos(np.sqrt(a**2 + b**2) + 100 + np.sin(b))
 
 
 @vectorize([float64(float64, float64)], target="cuda")
 def _vec_cuda_func(a: float, b: float) -> float:
-    return math.sqrt(a**2 + b**2)
+    return math.cos(math.sqrt(a**2 + b**2) + 100 + math.sin(b))
 
 
 @vectorize([float64(float64, float64)])
@@ -50,4 +50,4 @@ def vec_cuda_func(a: FloatArray, b: FloatArray) -> FloatArray:
 
 def vec_np_func(a: FloatArray, b: FloatArray) -> FloatArray:
     """Vectorized function using purely numpy."""
-    return np.sqrt(a**2 + b**2)
+    return np.cos(np.sqrt(a**2 + b**2) + 100 + np.sin(b))
