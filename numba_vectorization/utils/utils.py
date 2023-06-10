@@ -13,17 +13,14 @@ from typing import (
     Sequence,
     Set,
     Tuple,
-    TypeVar,
 )
 
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import numpy as np
 from numba import NumbaPerformanceWarning
-import matplotlib.ticker as ticker
 
 from numba_vectorization.utils.type_aliases import FloatArray
-
-TArgs_ = TypeVar("TArgs_")
 
 
 @dataclass(frozen=True)
@@ -68,6 +65,8 @@ class Experiment:
         """
         Run the experiment by calling all functions with all shapes given.
 
+        All functions will be called at first to avoid any possible delay due to JIT.
+
         Args:
             silence_warnings (bool, optional): Set to `True` to silent cuda warning
                 related to low performance due to low number of samples.
@@ -83,6 +82,7 @@ class Experiment:
         n_samples_used: list[int] = []
 
         # Iterate over each given shape
+        self._pre_run_all_funcs()
         for shape in self.shapes:
             data = self._create_data(shape=shape)
             n_samples_used.append(len(data[0]))
@@ -94,8 +94,16 @@ class Experiment:
                 times[func.__name__].append(t)
                 if print_metrics:
                     print(f"{self._func_name_with_spaces(func.__name__)}{t:.5f}s")
+        else:
+            print("\nFinished")
         if plot_metrics:
             self._plot_metrics(n_samples_used, times)
+
+    def _pre_run_all_funcs(self) -> None:
+        """Run all functions in order to perform potential JITs."""
+        data = self._create_data(shape=self.shapes[0])
+        for func in self.funcs:
+            func(*data)
 
     def _create_data(self, *, shape: tuple[int, ...]) -> tuple[FloatArray, ...]:
         """
