@@ -6,7 +6,6 @@ from numba import float64, vectorize
 
 from numba_vectorization.utils.type_aliases import FloatArray
 
-
 # Core functions
 
 
