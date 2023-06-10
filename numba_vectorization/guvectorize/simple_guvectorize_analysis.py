@@ -1,8 +1,8 @@
-"""Perform time-measuring experiment for guvectorized functions."""
+"""Perform time-measuring experiment for simple guvectorized functions."""
 import argparse
 from typing import List, Tuple
 
-from numba_vectorization.guvectorize.fk_functions import non_vectorized, vectorized
+from numba_vectorization.guvectorize.simple_functions import non_vectorized, vectorized
 from numba_vectorization.utils.utils import Experiment
 
 
@@ -65,7 +65,7 @@ def generate_shapes(*, increase_by: int, up_to: int) -> Tuple[Tuple[int, ...], .
         if shape >= up_to:
             break
         i += 1
-        shapes.append((shape, 6))
+        shapes.append((shape,))
     return tuple(shapes)
 
 
@@ -83,14 +83,9 @@ if __name__ == "__main__":
 
     # Functions to test
     funcs = [
-        non_vectorized.for_loop_fk,
-        non_vectorized.for_loop_njit_fk,
-        vectorized.vec_np_fk,
-        vectorized.vec_np_njit_fk,
-        vectorized.vec_np_njit_parallel_fk,
-        vectorized.guvec_cpu_fk,
-        vectorized.guvec_parallel_fk,
-        vectorized.guvec_cuda_fk,
+        non_vectorized.simple,
+        vectorized.guvec_cpu_simple,
+        vectorized.guvec_parallel_simple,
     ]
     experiment = Experiment(funcs, shapes=shapes, n_calls_per_function=n_calls)
     experiment.run(

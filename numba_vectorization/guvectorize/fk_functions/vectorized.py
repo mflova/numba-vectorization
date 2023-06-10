@@ -298,7 +298,7 @@ def _vec_np_fk(joints):
 
 
 @njit
-def _vec_njit_np_fk(joints):
+def _vec_np_njit_fk(joints):
     q1 = joints[:, 0]
     q2 = joints[:, 1]
     q3 = joints[:, 2]
@@ -357,8 +357,9 @@ def _vec_njit_np_fk(joints):
     ones = np.zeros(len(nx))
     return [nx, ox, ax, px, ny, oy, ay, py, nz, oz, az, pz, zeros, zeros, zeros, ones]
 
+
 @njit(parallel=True)
-def _vec_njit_parallel_np_fk(joints):
+def _vec_np_njit_parallel_fk(joints):
     q1 = joints[:, 0]
     q2 = joints[:, 1]
     q3 = joints[:, 2]
@@ -423,13 +424,14 @@ def vec_np_fk(arr: FloatArray) -> FloatArray:
     return _vec_np_fk(arr)
 
 
-def vec_njit_np_fk(arr: FloatArray) -> FloatArray:
+def vec_np_njit_fk(arr: FloatArray) -> FloatArray:
     """Perform FK equations with numpy vectorized pre-compiled with numba."""
-    return np.column_stack(_vec_njit_np_fk(arr))
+    return np.column_stack(_vec_np_njit_fk(arr))
 
-def vec_njit_parallel_np_fk(arr: FloatArray) -> FloatArray:
+
+def vec_np_njit_parallel_fk(arr: FloatArray) -> FloatArray:
     """Perform FK equations with numpy vectorized pre-compiled with numba."""
-    return np.column_stack(_vec_njit_parallel_np_fk(arr))
+    return np.column_stack(_vec_np_njit_parallel_fk(arr))
 
 
 def guvec_cpu_fk(arr: FloatArray) -> FloatArray:
